@@ -13,7 +13,7 @@ const cors = require('cors');
 
 const router = require("./routes/router");
 
-const port = 8005;
+const port = process.env.PORT || 8005;
 
 
 // middleware
