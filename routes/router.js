@@ -12,7 +12,7 @@ const BASE_URL = process.env.BASE_URL
 
 // get the products data
 
-router.get('/getproducts', async (req, res) => {
+router.get('https://amazonwebbackend.onrender.com/getproducts', async (req, res) => {
     try {
         const productsdata = await products.find();
         //console.log(productsdata +  "data is fetched here");
@@ -26,7 +26,7 @@ router.get('/getproducts', async (req, res) => {
 
 // getindividual
 
-router.get("/getproductsone/:id", async (req, res) => {
+router.get("https://amazonwebbackend.onrender.com/getproductsone/:id", async (req, res) => {
 
     try {
         const { id } = req.params;
@@ -42,7 +42,7 @@ router.get("/getproductsone/:id", async (req, res) => {
 });
 
 // register the data
-router.post("/register", async (req, res) => {
+router.post("https://amazonwebbackend.onrender.com/register", async (req, res) => {
     console.log(req.body);
 
     const { fname, email, mobile, password, cpassword } = req.body;
@@ -75,7 +75,7 @@ router.post("/register", async (req, res) => {
 
 
 // login data
-router.post("/login", async (req, res) => {
+router.post("https://amazonwebbackend.onrender.com/login", async (req, res) => {
     // console.log(req.body);
     const { email, password } = req.body;
 
@@ -117,7 +117,7 @@ router.post("/login", async (req, res) => {
 });
 
 // adding the data into cart
-router.post("/addcart/:id", authenicate, async (req, res) => {
+router.post("https://amazonwebbackend.onrender.com/addcart/:id", authenicate, async (req, res) => {
 
     try {
         //console.log("perfect 6");
@@ -145,7 +145,7 @@ router.post("/addcart/:id", authenicate, async (req, res) => {
 
 // cart details
 
-router.get("/cartdetails",authenicate, async (req, res) => {
+router.get("https://amazonwebbackend.onrender.com/cartdetails",authenicate, async (req, res) => {
 try {
     const buyuser = await USER.findOne({ _id: req.userID });
     console.log(buyuser + "user hain buy pr");
@@ -158,7 +158,7 @@ try {
 
 
 // valid user
-router.get("/validuser",authenicate, async (req, res) => {
+router.get("https://amazonwebbackend.onrender.com/validuser",authenicate, async (req, res) => {
     try {
         const validuserone = await USER.findOne({ _id: req.userID });
         //console.log(buyuser + "user hain buy pr");
@@ -170,7 +170,7 @@ router.get("/validuser",authenicate, async (req, res) => {
 
 
 // remove item from cart
-router.delete("/remove/:id", authenicate, async (req, res) => {
+router.delete("https://amazonwebbackend.onrender.com/remove/:id", authenicate, async (req, res) => {
     try {
         const { id } = req.params;
 
@@ -191,7 +191,7 @@ router.delete("/remove/:id", authenicate, async (req, res) => {
 
 //User logout
 
-router.get("/logout", authenicate, async (req, res) => {
+router.get("https://amazonwebbackend.onrender.com/logout", authenicate, async (req, res) => {
     try {
         req.rootUser.tokens = req.rootUser.tokens.filter((curelem) => {
             return curelem.token !== req.token
