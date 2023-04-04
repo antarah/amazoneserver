@@ -26,7 +26,7 @@ router.get('https://amazonwebbackend.onrender.com/getproducts', async (req, res)
 
 // getindividual
 
-router.get("https://amazonwebbackend.onrender.com/getproductsone/:id", async (req, res) => {
+router.get("/getproductsone/:id", async (req, res) => {
 
     try {
         const { id } = req.params;
