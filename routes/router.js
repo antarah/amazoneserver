@@ -8,14 +8,14 @@ const BASE_URL = process.env.BASE_URL
  //router.get("/",(req,res)=>{
   //  res.send("this is testing routes");
  //});
-
+console.log(BASE_URL)
 
 // get the products data
 
-router.get('https://amazonwebbackend.onrender.com/getproducts', async (req, res) => {
+router.get("https://amazonwebbackend.onrender.com/getproducts", async (req, res) => {
     try {
         const productsdata = await products.find();
-        //console.log(productsdata +  "data is fetched here");
+        console.log(productsdata +  "data is fetched here");
         res.status(201).json(productsdata);
     } catch (error) {
         console.log("error" + error.message);
@@ -26,24 +26,23 @@ router.get('https://amazonwebbackend.onrender.com/getproducts', async (req, res)
 
 // getindividual
 
-router.get("https://amazonwebbackend.onrender.com/getproductsone/:id", async (req, res) => {
+router.get("/getproductsone/:id", async (req, res) => {
 
     try {
         const { id } = req.params;
-        //console.log(id);
+        console.log(id);
 
         const individual = await products.findOne({ id: id });
-        // console.log(individual + "ind mila hai");
+        console.log(individual + "ind data");
 
         res.status(201).json(individual);
     } catch (error) {
         res.status(400).json(error);
     }
 });
-
 // register the data
-router.post("https://amazonwebbackend.onrender.com/register", async (req, res) => {
-    console.log(req.body);
+router.post("/register", async (req, res) => {
+    //console.log(req.body);
 
     const { fname, email, mobile, password, cpassword } = req.body;
 
@@ -52,7 +51,10 @@ router.post("https://amazonwebbackend.onrender.com/register", async (req, res) =
         console.log("NO data available");
     };
 
-
+    try {
+        
+        
+    
     const preuser = await USER.findOne({ email: email });
 
     if (preuser) {
@@ -70,12 +72,14 @@ router.post("https://amazonwebbackend.onrender.com/register", async (req, res) =
 
         res.status(201).json(storedata);
     }
+   } catch (error) {
 
+   }
 });
 
 
 // login data
-router.post("https://amazonwebbackend.onrender.com/login", async (req, res) => {
+router.post("/login", async (req, res) => {
     // console.log(req.body);
     const { email, password } = req.body;
 
@@ -93,13 +97,13 @@ router.post("https://amazonwebbackend.onrender.com/login", async (req, res) => {
             if (!isMatch) {
                 res.status(400).json({ error: "invalid crediential pass" });
             } else {
-                //generate token
-                const token = await userlogin.generateAuthtoken();
-                //console.log(token);
+             //generate token
+             const token = await userlogin.generateAuthtoken();
+             console.log(token);
 
 
                 res.cookie("Amazonweb", token, {
-                    expires: new Date(Date.now() + 1800000),
+                    expires: new Date(Date.now() + 900000),
                     httpOnly: true
                 });
 
@@ -110,27 +114,26 @@ router.post("https://amazonwebbackend.onrender.com/login", async (req, res) => {
         }
     } catch (error) {
         res.status(400).json({ error: "invalid crediential pass" });
-        // console.log("error the bhai catch ma for login time" + error.message);
+        console.log("eror at  login time" + error.message);
     };
 
 
 });
 
 // adding the data into cart
-router.post("https://amazonwebbackend.onrender.com/addcart/:id", authenicate, async (req, res) => {
+router.post("/addcart/:id", authenicate, async (req, res) => {
 
     try {
-        //console.log("perfect 6");
+        
         const { id } = req.params;
-        const cart = await products.findOne({ id: id });
+        const cart = await products.findOne({id: id});
         console.log(cart + "cart value");
 
-        const Usercontact = await USER.findOne({ _id: req.userID });
+        const Usercontact = await USER.findOne({_id: req.userID});
         console.log(Usercontact + "user value");
         
         if (Usercontact) {
             const cartData = await Usercontact.addcartdata(cart);
-
             await Usercontact.save();
             console.log(cartData + " thse save wait kr");
             console.log(Usercontact + "usernode save");
@@ -145,7 +148,7 @@ router.post("https://amazonwebbackend.onrender.com/addcart/:id", authenicate, as
 
 // cart details
 
-router.get("https://amazonwebbackend.onrender.com/cartdetails",authenicate, async (req, res) => {
+router.get("/cartdetails",authenicate, async (req, res) => {
 try {
     const buyuser = await USER.findOne({ _id: req.userID });
     console.log(buyuser + "user hain buy pr");
@@ -158,19 +161,19 @@ try {
 
 
 // valid user
-router.get("https://amazonwebbackend.onrender.com/validuser",authenicate, async (req, res) => {
+router.get("/validuser", authenicate, async (req, res) => {
     try {
         const validuserone = await USER.findOne({ _id: req.userID });
-        //console.log(buyuser + "user hain buy pr");
+        console.log(validuserone + "user hain home k header main pr");
         res.status(201).json(validuserone);
     } catch (error) {
         console.log(error + "error for valid user");
     }
-    });
+});
 
 
 // remove item from cart
-router.delete("https://amazonwebbackend.onrender.com/remove/:id", authenicate, async (req, res) => {
+router.delete("/remove/:id", authenicate, async (req, res) => {
     try {
         const { id } = req.params;
 
@@ -191,7 +194,7 @@ router.delete("https://amazonwebbackend.onrender.com/remove/:id", authenicate, a
 
 //User logout
 
-router.get("https://amazonwebbackend.onrender.com/logout", authenicate, async (req, res) => {
+router.get("/logout", authenicate, async (req, res) => {
     try {
         req.rootUser.tokens = req.rootUser.tokens.filter((curelem) => {
             return curelem.token !== req.token
@@ -208,4 +211,4 @@ router.get("https://amazonwebbackend.onrender.com/logout", authenicate, async (r
 });
 
 
-    module.exports = router;
+module.exports = router;
